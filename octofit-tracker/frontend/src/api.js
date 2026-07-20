@@ -1,10 +1,22 @@
 const codespaceName = import.meta.env.VITE_CODESPACE_NAME
 
-const apiHost = codespaceName
+export const codespacesApiBaseUrl = codespaceName
   ? `https://${codespaceName}-8000.app.github.dev`
-  : 'http://localhost:8000'
+  : null
 
-export const apiBaseUrl = `${apiHost}/api`
+export const apiBaseUrl = codespacesApiBaseUrl
+  ? `${codespacesApiBaseUrl}/api`
+  : 'http://localhost:8000/api'
+
+function resolveEndpoint(endpoint) {
+  if (import.meta.env.DEV) {
+    return endpoint
+  }
+
+  const apiHost = codespacesApiBaseUrl ?? 'http://localhost:8000'
+
+  return `${apiHost}${endpoint}`
+}
 
 export function normalizeCollection(payload, key) {
   if (Array.isArray(payload)) {
@@ -31,7 +43,7 @@ export function normalizeCollection(payload, key) {
 }
 
 export async function fetchCollection(endpoint, key) {
-  const response = await fetch(`${apiHost}${endpoint}`)
+  const response = await fetch(resolveEndpoint(endpoint))
 
   if (!response.ok) {
     throw new Error(`Failed to fetch ${endpoint}: ${response.status}`)
