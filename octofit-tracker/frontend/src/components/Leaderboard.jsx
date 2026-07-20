@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 import { fetchCollection } from '../api'
 
+const leaderboardEndpoint = '/api/leaderboard/'
+
 function Leaderboard() {
   const [leaderboard, setLeaderboard] = useState([])
   const [status, setStatus] = useState('loading')
@@ -8,7 +10,7 @@ function Leaderboard() {
   useEffect(() => {
     let ignore = false
 
-    fetchCollection('leaderboard')
+    fetchCollection(leaderboardEndpoint, 'leaderboard')
       .then((items) => {
         if (!ignore) {
           setLeaderboard(items)

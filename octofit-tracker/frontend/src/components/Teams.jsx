@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 import { fetchCollection } from '../api'
 
+const teamsEndpoint = '/api/teams/'
+
 function Teams() {
   const [teams, setTeams] = useState([])
   const [status, setStatus] = useState('loading')
@@ -8,7 +10,7 @@ function Teams() {
   useEffect(() => {
     let ignore = false
 
-    fetchCollection('teams')
+    fetchCollection(teamsEndpoint, 'teams')
       .then((items) => {
         if (!ignore) {
           setTeams(items)

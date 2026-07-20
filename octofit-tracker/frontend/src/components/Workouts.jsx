@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 import { fetchCollection } from '../api'
 
+const workoutsEndpoint = '/api/workouts/'
+
 function Workouts() {
   const [workouts, setWorkouts] = useState([])
   const [status, setStatus] = useState('loading')
@@ -8,7 +10,7 @@ function Workouts() {
   useEffect(() => {
     let ignore = false
 
-    fetchCollection('workouts')
+    fetchCollection(workoutsEndpoint, 'workouts')
       .then((items) => {
         if (!ignore) {
           setWorkouts(items)
